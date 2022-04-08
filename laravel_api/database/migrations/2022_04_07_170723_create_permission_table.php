@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRoleMapTable extends Migration
+class CreatePermissionTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,12 @@ class CreateRoleMapTable extends Migration
      */
     public function up()
     {
-        Schema::create('role_map', function (Blueprint $table) {
-            $table->integer('role_id');
-            $table->integer('user_id');
-            $table->unique('user_id');
+        Schema::create('permission', function (Blueprint $table) {
+            $table->id();
+            $table->string('code')->comment('權限代號');
+            $table->string('name')->comment('名稱');
+            $table->timestamps();
+            $table->unique('code');
         });
     }
 
@@ -27,6 +29,6 @@ class CreateRoleMapTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('role_map');
+        Schema::dropIfExists('permission');
     }
 }
