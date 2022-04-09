@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
 import store from '@/store'
-//import { getToken } from '@/utils/auth'
+import { getToken, getTokenExpire } from '@/utils/auth'
 
 // create an axios instance
 const service = axios.create({
@@ -12,8 +12,8 @@ const service = axios.create({
 // request interceptor
 service.interceptors.request.use(
   config => {
-    if (store.getters.token) {
-      //config.headers['X-Token'] = getToken()
+    if (getToken()) {
+      config.headers['Authorization'] = 'Bearer '+getToken()
     }
     return config
   },
@@ -28,7 +28,30 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   response => response,
   error => {
-    //window.location.reload()
+    const now = Date.now()
+    if(error.response.status === 401 && getToken() && getTokenExpire() && now >= parseInt(getTokenExpire())){
+      store.dispatch('refreshToken').then(r => {
+        if(r.result === 'success'){
+          ElMessage({
+            message: '登入Token刷新成功 三秒後重新整理',
+            type: 'success',
+            duration: 5 * 1000
+          })
+          setTimeout('window.location.reload()', 3000)
+        }else{
+          store.dispatch('FedLogOut').then(() => {
+            window.location.reload()
+          })
+        }
+      })
+    }else{
+      if(error.response.status === 401 || error.response.status === 403){
+        store.dispatch('FedLogOut').then(() => {
+          window.location.reload()
+        })
+      }
+    }
+
     ElMessage({
       message: error.message,
       type: 'error',

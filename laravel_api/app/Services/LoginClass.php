@@ -33,8 +33,39 @@ class LoginClass {
             $response = Http::post(route('passport.token'), $token_data);
             $response_array = $response->json();
             
-            return ['access_token'=> $response_array['access_token'], 'refresh_token'=> $response_array['refresh_token']];
+            return ['access_token'=> $response_array['access_token'], 'refresh_token'=> $response_array['refresh_token'], 'expires_in'=> $response_array['expires_in']];
         }
+    }
+
+    /**
+     * 刷新登入token
+     * 
+     * @param string $refresh_token
+     * 
+     * @return array {access_token=> 登入token, refresh_token=> 刷新token}
+     */
+    public static function refresh_token($refresh_token){
+        //取得token secret
+        $token_secret = DB::table('oauth_clients')
+                ->where('password_client', true)
+                ->orderBy('id', 'asc')
+                ->first();
+        $token_secret = json_decode(json_encode($token_secret), true);
+        $token_data = [
+            'grant_type' => 'refresh_token',
+            'refresh_token' => $refresh_token,
+            'client_id' => $token_secret['id'],
+            'client_secret' => $token_secret['secret'],
+            'scope' => '',
+        ];
+        $response = Http::post(route('passport.token'), $token_data);
+        $response_array = $response->json();
+
+        if(isset($response_array['error'])){
+            throw new \Exception('刷新失敗');
+        }
+
+        return ['access_token'=> $response_array['access_token'], 'refresh_token'=> $response_array['refresh_token'], 'expires_in'=> $response_array['expires_in']];
     }
 
     /**

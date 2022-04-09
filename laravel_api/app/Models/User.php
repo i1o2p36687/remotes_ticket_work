@@ -52,4 +52,9 @@ class User extends Authenticatable
     {
         return $this->where('account', $username)->first();
     }
+
+    public function getRoleMap(){
+        return $this->belongsTo('App\Models\RoleMap', 'id', 'user_id')
+                ->select(array('user_id', 'role_id'));
+    }
 }

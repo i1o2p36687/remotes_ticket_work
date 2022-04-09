@@ -17,7 +17,8 @@ class PermissionSeeder extends Seeder
         $permissions = [
             'view_bug'=> '瀏覽錯誤', 'create_bug'=> '創建錯誤', 'update_bug'=> '修改錯誤', 'delete_bug'=> '刪除錯誤', 'resolve_bug'=> '解決錯誤',
             'view_test'=> '瀏覽測試', 'create_test'=> '創建測試', 'update_test'=> '修改測試', 'delete_test'=> '刪除測試', 'resolve_test'=> '解決測試',
-            'view_feature'=> '瀏覽功能', 'create_feature'=> '創建功能', 'update_feature'=> '修改功能', 'delete_feature'=> '刪除功能', 'resolve_feature'=> '解決功能'
+            'view_feature'=> '瀏覽功能', 'create_feature'=> '創建功能', 'update_feature'=> '修改功能', 'delete_feature'=> '刪除功能', 'resolve_feature'=> '解決功能',
+            'view_user'=> '瀏覽會員列表', 'create_user'=> '創建會員', 'update_user'=> '修改會員', 'delete_user'=> '刪除會員'
         ];
 
         $insert = [];

@@ -12,6 +12,11 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: () => import('../views/LoginView.vue')
+  },
+  {
+    path: '/users',
+    name: 'Users',
+    component: () => import('../views/UserView.vue')
   }
 ]
 
@@ -25,14 +30,23 @@ router.beforeEach((to) => {
   if (store.getters.token) {
     if (to.name === 'Login') {
       return { name: 'home' }
+    }else{
+      //取得使用者資訊
+      if(store.getters.user.length === 0){
+        store.dispatch('getUserInfo').then(response => {
+          return response.result === 'success' ? true : false;
+        })
+      }else{
+        return true
+      }
     }
   }else{
     if (to.name !== 'Login') {
       return { name: 'Login' }
     }
-  }
 
-  return true
+    return true
+  }
 })
 
 export default router
