@@ -169,7 +169,7 @@ export default {
 		},
 		updateResolve(){
 			this.loading_resolve = true
-			const d = {id: this.form.id, type: this.form.type, status: 2}
+			const d = {id: this.form.id, type: this.form.type}
 			resolveTicket(d).then(response => {
 				const data = response.data
 				this.loading_resolve = false
@@ -184,7 +184,7 @@ export default {
 		},
 		updateDelete(){
 			this.loading_delete = true
-			const d = {id: this.form.id, type: this.form.type, status: 0}
+			const d = {id: this.form.id, type: this.form.type}
 			deleteTicket(d).then(response => {
 				const data = response.data
 				this.loading_delete = false

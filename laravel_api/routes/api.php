@@ -43,7 +43,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     //修改 Ticket
     Route::put('/update_ticket', 'TicketController@updateTicket')->middleware('chk.permission:update@@ticket');
     //解決 Ticket 功能
-    Route::put('/resolve_ticket', 'TicketController@updateStatus')->middleware('chk.permission:resolve@@ticket');
+    Route::put('/resolve_ticket', 'TicketController@resolveTicket')->middleware('chk.permission:resolve@@ticket');
     //刪除 Ticket 功能
-    Route::put('/delete_ticket', 'TicketController@updateStatus')->middleware('chk.permission:delete@@ticket');
+    Route::put('/delete_ticket', 'TicketController@deleteTicket')->middleware('chk.permission:delete@@ticket');
 });

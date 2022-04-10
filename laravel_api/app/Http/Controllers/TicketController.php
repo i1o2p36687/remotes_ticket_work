@@ -88,7 +88,7 @@ class TicketController extends Controller
 
             DB::commit();
 
-            $response = ['result'=> 'success', 'msg'=> '新增成功'];
+            $response = ['result'=> 'success', 'msg'=> '修改成功'];
         } catch (\Exception $e) {
             DB::rollBack();
             $response = ['result'=> 'fail', 'msg'=> $e->getMessage()];
@@ -106,14 +106,36 @@ class TicketController extends Controller
      * 
      * @return array {result: 結果為 success or fail}
      */
-    public function updateStatus(Request $request){
+    public function resolveTicket(Request $request){
         try {
             $data = $request->all();
             
-            $result = TicketClass::update_status($data['id'], $data['status']);
-            $msg = $data['status'] === 0 ? '已刪除' : '成功更變為已解決';
+            $result = TicketClass::update_status($data['id'], 2);
             
-            $response = ['result'=> 'success', 'msg'=> $msg];
+            $response = ['result'=> 'success', 'msg'=> '成功更變為已解決'];
+        } catch (\Exception $e) {
+            $response = ['result'=> 'fail', 'msg'=> $e->getMessage()];
+        }
+
+        return $response;
+    }
+
+    /**
+     * 修改Ticket
+     * 
+     * @param int request->id
+     * @param string request->type 
+     * @param int request->status
+     * 
+     * @return array {result: 結果為 success or fail}
+     */
+    public function deleteTicket(Request $request){
+        try {
+            $data = $request->all();
+            
+            $result = TicketClass::update_status($data['id'], 0);
+            
+            $response = ['result'=> 'success', 'msg'=> '已刪除'];
         } catch (\Exception $e) {
             $response = ['result'=> 'fail', 'msg'=> $e->getMessage()];
         }
