@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Services\UserClass;
 use App\Services\CommonClass;
 use App\Models\Role;
+use DB;
 
 class UserController extends Controller
 {   
@@ -28,7 +29,7 @@ class UserController extends Controller
     }
 
     /**
-     * 取得使用者資訊
+     * 取得使用者列表
      * 
      * @param string request->page  頁數
      * @param string request->limit 一頁幾筆
@@ -90,10 +91,13 @@ class UserController extends Controller
         try {
             $data = $request->all();
             $data['id'] = '';
-            $result = UserClass::editUser($data);
+            DB::beginTransaction();
+            $result = UserClass::edit_user($data);
+            DB::commit();
 
             $response = ['result'=> 'success', 'msg'=> '新增成功'];
         } catch (\Exception $e) {
+            DB::rollBack();
             $response = ['result'=> 'fail', 'msg'=> $e->getMessage()];
         }
 
@@ -111,10 +115,13 @@ class UserController extends Controller
     public function updateUser(Request $request){
         try {
             $data = $request->all();
-            $result = UserClass::editUser($data);
+            DB::beginTransaction();
+            $result = UserClass::edit_user($data);
+            DB::commit();
 
             $response = ['result'=> 'success', 'msg'=> '修改成功'];
         } catch (\Exception $e) {
+            DB::rollBack();
             $response = ['result'=> 'fail', 'msg'=> $e->getMessage()];
         }
 

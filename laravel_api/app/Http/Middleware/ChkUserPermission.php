@@ -19,6 +19,13 @@ class ChkUserPermission extends Middleware
      */
     public function handle(Request $request, Closure $next, $permission)
     {
+        //判斷 要檢查哪種ticket類型
+        if(strpos($permission, '@@') !== false && !empty($request->type)){
+            $action = explode('@@', $permission);
+            $action = $action[0];
+            $permission = $action.'_'.$request->type;
+        }
+
         $user_permissions = UserClass::get_user_permission();
         if(!in_array($permission, $user_permissions)){
             return response()->json(['result'=>'fail', 'msg'=> '權限不足!'], 200);

@@ -35,4 +35,15 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::post('/create_user', 'UserController@createUser')->middleware('chk.permission:create_user');
     //修改使用者
     Route::put('/update_user', 'UserController@updateUser')->middleware('chk.permission:update_user');
+
+    //取得 Ticket列表
+    Route::get('/get_ticket_list', 'TicketController@getTicketList');
+    //新增 Ticket
+    Route::post('/create_ticket', 'TicketController@createTicket')->middleware('chk.permission:create@@ticket');
+    //修改 Ticket
+    Route::put('/update_ticket', 'TicketController@updateTicket')->middleware('chk.permission:update@@ticket');
+    //解決 Ticket 功能
+    Route::put('/resolve_ticket', 'TicketController@updateStatus')->middleware('chk.permission:resolve@@ticket');
+    //刪除 Ticket 功能
+    Route::put('/delete_ticket', 'TicketController@updateStatus')->middleware('chk.permission:delete@@ticket');
 });

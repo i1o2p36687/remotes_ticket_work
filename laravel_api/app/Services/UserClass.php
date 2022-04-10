@@ -65,12 +65,13 @@ class UserClass {
         return $tmp;
     }
 
-    public static function editUser($data){
+    public static function edit_user($data){
         if($data['id'] == ''){
             $user_id = User::insertGetId([
                 'account'=> $data['account'],
                 'password'=> Hash::make($data['password']),
-                'name'=> $data['name']
+                'name'=> $data['name'],
+                'created_at'=> date('Y-m-d H:i:s')
             ]);
             if(!$user_id){
                 throw new \Exception('新增失敗');
